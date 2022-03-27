@@ -1,21 +1,26 @@
 const { Pool } = require('pg');
-const connectionString = process.env.DATABASE_URL || {
-  host: 'localhost',
-  database: 'postgres',
-  port: 5432,
-  max: 10,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
-  user: 'postgres',
-  password: 'postgres',
-};
+const connectionString = process.env.DATABASE_URL || 'postgres://postgres:postgres@localhost:5432/postgres' 
+// {
+//   host: 'localhost',
+//   database: 'postgres',
+//   port: 5432,
+//   max: 10,
+//   idleTimeoutMillis: 30000,
+//   connectionTimeoutMillis: 2000,
+//   user: 'postgres',
+//   password: 'postgres',
+// };
 
-const pool = new Pool({
+const poolConnection = process.env.DATABASE_URL ? {
   connectionString,
   ssl: {
     rejectUnauthorized: false
   }
-});
+} : {
+  connectionString
+}
+
+const pool = new Pool(poolConnection);
 
 module.exports = { 
   query: async (text, params) => await pool.query(text, params), 
