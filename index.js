@@ -1,6 +1,6 @@
 const express = require('express');
 const repository = require('./data/repository');
-var cors = require('cors')
+var cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -36,14 +36,14 @@ app.put('/api/boardgames/:id', async (req, res) => {
   console.log('entrei no put');
   await repository.updateBoardgame(req.body, req.params.id);
   res.status(200);
-  res.end()
+  res.end();
 });
 
 app.delete('/api/boardgames/:id', async (req, res) => {
   console.log('entrei no delete');
   await repository.deleteBoardgame(req.params.id);
   res.status(204);
-  res.end()
+  res.end();
 });
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));

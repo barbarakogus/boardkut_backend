@@ -23,4 +23,4 @@ module.exports = {
     const { rows } = await db.query(db.DELETE_BOARDGAME, [id]);
     return rows; 
   },
-}
+};
