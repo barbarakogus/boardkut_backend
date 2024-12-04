@@ -9,18 +9,25 @@ app.use(cors());
 
 app.get('/api/boardgames', async (req, res) => {
   console.log('entrei no get all');
-  const boardgames = await repository.getAllBoardgames();
-  res
-    .json(boardgames)
-    .status(200)
+  const { boardgames, error } = await repository.getAllBoardgames();
+  if (error) {
+    res.status(500).send()
+  } else {
+    res
+      .json(boardgames)
+      .status(200)
+  }
 });
 
 app.get('/api/boardgames/:id', async (req, res) => {
   console.log('entrei no get by id');
   const boardgame = await repository.getBoardgameById(req.params.id);
-  res
-    .json(boardgame)
-    .status(200)
+  if (boardgame) {
+    res.json(boardgame)
+      .status(200)
+  } else {
+    res.status(404).send()
+  }
 });
 
 app.post('/api/boardgames', async (req, res) => {

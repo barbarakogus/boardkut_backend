@@ -1,26 +1,32 @@
-const db = require('./db');
+const { SUPABASE } = require('./db');
 
 module.exports = {
   getAllBoardgames: async () => {
-    const { rows } = await db.query(db.GET_BOARDGAMES);
-    return rows;
+    const res = await SUPABASE.from('boardgames').select();
+    return { boardgames: res.data, error: res.error?.message };
   },
   getBoardgameById: async (id) => {
-    const { rows } = await db.query(db.GET_BOARDGAME_BY_ID, [id]);
-    return rows;
+    const res = await SUPABASE.from('boardgames').select().eq('id', id);
+    if (!res) return null;
+    if (res.length == 0) {
+      return null;
+    }
+    return res.data[0];
   },
   addBoardgame: async (data) => {
-    const { rows } = await db.query(db.POST_BOARDGAME, [data.title, data.type, data.players, data.playTime, data.language, data.age, data.purchaseDate]);
-    return rows[0];
+    const res = await SUPABASE.from('boardgames').insert({ title: data.title, type: data.type, players: data.players, play_time: data.playTime, play_time_unit: data.playTimeUnit, language: data.language, purchase_date: data.purchaseDate }).select()
+    if (!res || res.length === 0) {
+      return null
+    } else {
+      return res.data[0];
+    }
   },
   updateBoardgame: async (data, id) => {
-    console.log(data);
-    console.log(id);
-    const { rows } = await db.query(db.UPDATE_BOARDGAME, [data.title, data.type, data.players, data.playime, data.language, data.age, data.purchaseDate, id]);
-    return rows; 
+    const res = await SUPABASE.from('boardgames').update({ title: data.title, type: data.type, players: data.players, play_time: data.playTime, play_time_unit: data.playTimeUnit, language: data.language, age: data.age, purchase_date: data.purchaseDate }).eq('id', id)
+    return res.data;
   },
-  deleteBoardgame:async (id) => {
-    const { rows } = await db.query(db.DELETE_BOARDGAME, [id]);
-    return rows; 
+  deleteBoardgame: async (id) => {
+    const res = await SUPABASE.from('boardgames').delete().eq('id', id)
+    return res.data;
   },
 };

@@ -1,5 +1,5 @@
-const { Pool } = require('pg');
-const connectionString = process.env.DATABASE_URL || 'postgres://postgres:postgres@localhost:5432/postgres'; 
+// const { Pool } = require('pg');
+// const connectionString = process.env.DATABASE_URL || 'postgres://postgres:postgres@localhost:5432/postgres'; 
 // {
 //   host: 'localhost',
 //   database: 'postgres',
@@ -11,22 +11,30 @@ const connectionString = process.env.DATABASE_URL || 'postgres://postgres:postgr
 //   password: 'postgres',
 // };
 
-const poolConnection = process.env.DATABASE_URL ? {
-  connectionString,
-  ssl: {
-    rejectUnauthorized: false
-  }
-} : {
-  connectionString
-};
+// const poolConnection = process.env.DATABASE_URL ? {
+//   connectionString,
+//   ssl: {
+//     rejectUnauthorized: false
+//   }
+// } : {
+//   connectionString
+// };
 
-const pool = new Pool(poolConnection);
+// const pool = new Pool(poolConnection);
 
-module.exports = { 
-  query: async (text, params) => await pool.query(text, params), 
-  GET_BOARDGAMES : 'SELECT title, type, players, play_time AS "playTime", language, age, purchase_date AS "purchaseDate", id FROM "boardgames"',
-  GET_BOARDGAME_BY_ID : 'SELECT title, type, players, play_time AS "playTime", language, age, purchase_date AS "purchaseDate", id FROM "boardgames" WHERE id = $1',
-  POST_BOARDGAME : 'INSERT INTO "boardgames" ("title", "type", "players", "play_time", "language", "age", "purchase_date") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id',
-  UPDATE_BOARDGAME: 'UPDATE "boardgames" SET "title" = $1, "type" = $2, "players" = $3, "play_time" = $4, "language" = $5, "age" = $6, "purchase_date" = $7 WHERE id = $8',
-  DELETE_BOARDGAME: 'DELETE FROM  "boardgames" WHERE id = $1'
+const { createClient } = require('@supabase/supabase-js')
+
+const supabaseUrl = 'https://gtbrmsmztghbpiuvpogo.supabase.co'
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd0YnJtc216dGdoYnBpdXZwb2dvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzI4OTM5MTIsImV4cCI6MjA0ODQ2OTkxMn0.gYZYdg95mo9dlWl181wUxI4DRRuXB5hjFMyYs0JAzVQ'  //process.env.SUPABASE_KEY
+const supabase = createClient(supabaseUrl, supabaseKey)
+
+
+module.exports = {
+  SUPABASE: supabase,
+  // query: async (text, params) => await supabase.query(text, params),
+  // GET_BOARDGAMES: 'SELECT title, type, players, play_time AS "playTime", language, age, purchase_date AS "purchaseDate", id FROM "boardgames"',
+  // GET_BOARDGAME_BY_ID: 'SELECT title, type, players, play_time AS "playTime", language, age, purchase_date AS "purchaseDate", id FROM "boardgames" WHERE id = $1',
+  // POST_BOARDGAME: 'INSERT INTO "boardgames" ("title", "type", "players", "play_time", "language", "age", "purchase_date") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id',
+  // UPDATE_BOARDGAME: 'UPDATE "boardgames" SET "title" = $1, "type" = $2, "players" = $3, "play_time" = $4, "language" = $5, "age" = $6, "purchase_date" = $7 WHERE id = $8',
+  // DELETE_BOARDGAME: 'DELETE FROM  "boardgames" WHERE id = $1'
 };
