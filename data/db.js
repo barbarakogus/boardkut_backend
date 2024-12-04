@@ -22,12 +22,12 @@
 
 // const pool = new Pool(poolConnection);
 
+require('dotenv').config();
 const { createClient } = require('@supabase/supabase-js')
 
 const supabaseUrl = 'https://gtbrmsmztghbpiuvpogo.supabase.co'
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd0YnJtc216dGdoYnBpdXZwb2dvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzI4OTM5MTIsImV4cCI6MjA0ODQ2OTkxMn0.gYZYdg95mo9dlWl181wUxI4DRRuXB5hjFMyYs0JAzVQ'  //process.env.SUPABASE_KEY
+const supabaseKey = process.env.SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
-
 
 module.exports = {
   SUPABASE: supabase,
