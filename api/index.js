@@ -1,11 +1,13 @@
 const express = require('express');
-const repository = require('./data/repository');
+const repository = require('../data/repository');
 var cors = require('cors');
 
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
+
+app.get("/", (req, res) => res.send("Express on Vercel"));
 
 app.get('/api/boardgames', async (req, res) => {
   console.log('entrei no get all');
@@ -53,6 +55,6 @@ app.delete('/api/boardgames/:id', async (req, res) => {
   res.end();
 });
 
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
+//app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
 
-module.exports.app = app;
+module.exports = app;
